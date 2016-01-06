@@ -6,12 +6,16 @@ public class PlayerControl : MonoBehaviour {
     public float speed = 10;
     public float stamina = 0;
     public float stamina_reg = 15;
-    public float player = 1;
+    public int player = 1;
     private string[] buttons = new string[4];
     private bool[] lastState = new bool[4];
+    public bool keyboardControl;
+    new private Rigidbody rigidbody;
 	// Use this for initialization
 	void Start () {
         buttons[0] = ("joystick " + player + " button " + Buttons.DASH);
+        buttons[1] = ("joystick " + player + " button " + Buttons.SPRINT);
+        this.rigidbody = this.transform.GetChild(0).GetComponent<Rigidbody>();
 	}
 	
 	void Update() {
@@ -27,25 +31,32 @@ public class PlayerControl : MonoBehaviour {
         stamina = Mathf.Min(stamina, 100);
         
 
-        Vector2 force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 force = new Vector2(Input.GetAxis("Horizontal"+player), Input.GetAxis("Vertical"+player));
+        if (keyboardControl)
+            force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();
-        if(Input.GetAxis("Sprint") == 1)
+        if(keyDown("Sprint"))
             force *= 2;
 
-        this.GetComponent<Rigidbody>().AddForce(force.x*speed,0, force.y*speed);
+        rigidbody.AddForce(force.x*speed,0, force.y*speed);
 
         updateKeystates();
 	}
+
 
     bool keyDown(string type)
     {
         switch (type)
         {
             case "Dash":
-                if (Input.GetKey(buttons[0]) && !this.lastState[0])
+                if (Input.GetKeyDown(buttons[0]) || (keyboardControl && Input.GetKeyDown("x")))
                     return true;
-                break;      
+                break;
+            case "Sprint":
+                if (Input.GetKey(buttons[1]) || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
+                    return true;
+                break;
         }
         return false;
     }
@@ -60,7 +71,7 @@ public class PlayerControl : MonoBehaviour {
         if (stamina >= 70)
         {
             this.stamina -= 70;
-            this.GetComponent<Rigidbody>().velocity *= 5;
+            rigidbody.velocity *= 5;
         }
     }
 
