@@ -4,8 +4,8 @@ using System.Collections;
 public class Platform : MonoBehaviour {
 
     public static readonly int platformSize = 20;
-    public static readonly int gridSize = 4;
-    public static readonly int maxObstacles = 3;
+    public static readonly int gridSize = 6;
+    public static readonly int maxObstacles = 10;
 
     private GameObject platObj;
     private absField[,] grid;
@@ -16,7 +16,7 @@ public class Platform : MonoBehaviour {
     void Start () {
         // init platform
         this.platObj = this.gameObject;
-        this.platObj.transform.localScale = new Vector3(platformSize, 1, platformSize);
+        //this.platObj.transform.localScale = new Vector3(platformSize, 1, platformSize);
         this.grid = new absField[gridSize, gridSize];
         this.fieldSize = platformSize / (float)gridSize;
 
