@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,10 +15,12 @@ public class PlayerControl : MonoBehaviour {
     new private Rigidbody rigidbody;
     public float jumpspeed = 50;
     public PlatformRow curRow;
-    public absField curField;
     private bool grounded = true;
     private SphereCollider col;
     private Vector3 lastVel;
+    private float health = 100;
+    public Text hpTxt;
+
 	// Use this for initialization
 	void Start () {
         
@@ -119,7 +122,7 @@ public class PlayerControl : MonoBehaviour {
     {
         RaycastHit hit;
         Vector3 down = transform.TransformDirection(Vector3.down);
-
+        
         if (Physics.Raycast(transform.position, down, out hit, 10f, 1 << LayerMask.NameToLayer("World")))
         {
             PlatformRow row = hit.transform.GetComponent<PlatformRow>();
@@ -127,10 +130,10 @@ public class PlayerControl : MonoBehaviour {
             if (row != null)
                 this.curRow = row;
 
-            absField field = hit.collider.transform.parent.GetComponent<absField>();
-
-            if (field != null)
-                this.curField = field;
+            if (hit.transform.name.Equals("Lava"))
+            {
+                this.hurtPlayer(PlatformManager.lavaDmg);
+            }
         }
     }
 
@@ -150,4 +153,16 @@ public class PlayerControl : MonoBehaviour {
         }
     }
      * */
+
+    public void hurtPlayer(float damage)
+    {
+        this.health -= damage;
+        this.hpTxt.text = "HP: " + (int)this.health;
+
+        if(this.health < 0)
+        {
+            this.hpTxt.text = "DEAD";
+            Destroy(this.gameObject);
+        }
+    }
 }

@@ -6,11 +6,12 @@ public class PlatformManager : MonoBehaviour {
 
     public static PlatformManager instance;
 
-    public static readonly int maxPlatforms = 32;
+    public static readonly int maxPlatforms = 24;
     public static readonly int platformHeight = 20;
     public static readonly int gridSize = 8;
+    public static readonly float lavaDmg = 0.5f;
     public static float platformGap = 0;
-    public static float platformSpeed = 3;
+    public static float platformSpeed = 2f;
 
     private List<PlatformRow> _platformRows;
     private PlatformRow _platToDestroy;
