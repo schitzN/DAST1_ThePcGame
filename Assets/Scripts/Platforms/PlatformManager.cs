@@ -20,15 +20,26 @@ public class PlatformManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // init
         instance = this;
         this.Players = GameObject.Find("Players").transform;
         this._platformRows = new List<PlatformRow>();
 
+        // create rows
         this.fieldSize = platformHeight / (float)gridSize;
 
         for (int i = -(maxPlatforms / 2); i < (maxPlatforms / 2); i++)
         {
             this.createPlatform(new Vector3((this.fieldSize + platformGap) * i, 0, 0));
+        }
+
+        // create border
+        for (int i = -1; i <= 1; i += 2)
+        {
+            GameObject border = Instantiate(Resources.Load<GameObject>("Field_Hole"));
+
+            border.transform.localScale = new Vector3(maxPlatforms * fieldSize, border.transform.localScale.y, 15f);
+            border.transform.Translate(Vector3.forward * i * ((platformHeight / 2f) + (border.transform.localScale.z / 2f)));
         }
 	}
 	
