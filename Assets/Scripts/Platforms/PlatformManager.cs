@@ -6,7 +6,7 @@ public class PlatformManager : MonoBehaviour {
 
     public static PlatformManager instance;
 
-    public static readonly int maxPlatforms = 24;
+    public static readonly int maxPlatforms = 22;
     public static readonly int platformHeight = 20;
     public static readonly int gridSize = 8;
     public static readonly float lavaDmg = 0.5f;
