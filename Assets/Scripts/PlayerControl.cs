@@ -11,7 +11,7 @@ public class PlayerControl : MonoBehaviour {
     public bool keyboardControl;
     new private Rigidbody rigidbody;
     public float jumpspeed = 50;
-    public Platform curPlat;
+    public PlatformRow curRow;
     public absField curField;
     private bool grounded = true;
     private SphereCollider col;
@@ -31,9 +31,10 @@ public class PlayerControl : MonoBehaviour {
         {
             Dash();
         }
-        if (keyDown("Interact") && grounded)
+        if (keyDown("Interact") && grounded && !this.curRow.getIsMoving())
         {
-            this.curPlat.changeRow(this.curField);
+            PlatformManager.instance.swapRow(this.curRow);
+            //this.curPlat.changeRow(this.curField);
         }
         if (keyDown("Jump") && grounded)
         {
@@ -103,12 +104,13 @@ public class PlayerControl : MonoBehaviour {
     {
         RaycastHit hit;
         Vector3 down = transform.TransformDirection(Vector3.down);
-        if (Physics.Raycast(transform.position, down, out hit, 10f))
-        {
-            Platform plat = hit.transform.GetComponent<Platform>();
 
-            if (plat != null)
-                this.curPlat = plat;
+        if (Physics.Raycast(transform.position, down, out hit, 10f, 1 << LayerMask.NameToLayer("World")))
+        {
+            PlatformRow row = hit.transform.GetComponent<PlatformRow>();
+
+            if (row != null)
+                this.curRow = row;
 
             absField field = hit.collider.transform.parent.GetComponent<absField>();
 
