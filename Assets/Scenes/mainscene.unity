@@ -4693,6 +4693,7 @@ GameObject:
   - 64: {fileID: 1751939129}
   - 23: {fileID: 1751939128}
   - 114: {fileID: 1751939127}
+  - 65: {fileID: 1751939131}
   m_Layer: 8
   m_Name: Lava
   m_TagString: Untagged
@@ -4759,7 +4760,7 @@ MeshCollider:
   m_GameObject: {fileID: 1751939125}
   m_Material: {fileID: 13400000, guid: 45082ea9c5ed4794ea72dd70099fc569, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -4770,6 +4771,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1751939125}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1751939131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1751939125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.999999, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &1857866355
 GameObject:
   m_ObjectHideFlags: 0

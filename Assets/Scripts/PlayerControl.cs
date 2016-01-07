@@ -53,8 +53,7 @@ public class PlayerControl : MonoBehaviour {
         {
             this.rigidbody.velocity = new Vector3(this.rigidbody.velocity.x,jumpspeed, this.rigidbody.velocity.z);
         }
-        if (grounded && dashing == 0)
-            lastVel = rigidbody.velocity;
+
         if(dashing > 0)
             this.dashing -= Time.deltaTime;
         if (dashing < 0)
@@ -87,73 +86,27 @@ public class PlayerControl : MonoBehaviour {
             force *= 1.8f;
             this.stamina = Mathf.Max(this.stamina - 1f, 0);
         }
+        Vector2 vel = calcVel(force);
+
         if (grounded && dashing == 0)
         {
-            float x = 0;
-            float z = 0;
+            
             //rigidbody.AddForce(force.x * this.force, 0, force.y * this.force);
-            if (force.x >= 0)
-            {
-                if (rigidbody.velocity.x >= 0)
-                {
-                    x = Mathf.Max(force.x * speed, rigidbody.velocity.x);
-                }
-                else
-                {
-                    x = rigidbody.velocity.x + force.x * speed * 1f;
-                }
-            }
-            else if (force.x < 0)
-            {
-                if (rigidbody.velocity.x <= 0)
-                {
-                    x = Mathf.Min(force.x * speed, rigidbody.velocity.x);
-                }
-                else
-                {
-                    x = rigidbody.velocity.x + force.x * speed * 1f;
-                }
-            }
-
-            if (force.y >= 0)
-            {
-                if (rigidbody.velocity.z >= 0)
-                {
-                    z = Mathf.Max(force.y * speed, rigidbody.velocity.z);
-                }
-                else
-                {
-                    z = rigidbody.velocity.z + force.y * speed * 1f;
-                }
-            }
-            else if (force.y < 0)
-            {
-                if (rigidbody.velocity.z <= 0)
-                {
-                    z = Mathf.Min(force.y * speed, rigidbody.velocity.z);
-                }
-                else
-                {
-                    z = rigidbody.velocity.z + force.y * speed * 1f;
-                }
-            }
-
-            //float x = force.x > 0 ? Mathf.Max(force.x * speed * 0.01f, rigidbody.velocity.x) : Mathf.Min(force.x * speed * 0.01f, rigidbody.velocity.x);
-            //float z = force.y > 0 ? Mathf.Max(force.y * speed * 0.01f, rigidbody.velocity.z) : Mathf.Min(force.y * speed * 0.01f, rigidbody.velocity.z);
-            rigidbody.velocity = new Vector3(x, rigidbody.velocity.y, z);
+            
+            rigidbody.velocity = new Vector3(vel.x, rigidbody.velocity.y, vel.y);
         }
         else if (!grounded)
             rigidbody.velocity = new Vector3(lastVel.x, rigidbody.velocity.y, lastVel.z);
-
+        if (!grounded && dashing == 0)
+            lastVel = lastVel + (new Vector3(vel.x,0,vel.y) - new Vector3(lastVel.x,0,lastVel.z)) * Time.deltaTime;
         checkPlatforms();
         groundCheck();
-        Vector3 vel = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
-        //if (vel.magnitude > 10 && dashing == 0)
-        //{
-        //    rigidbody.velocity = new Vector3(vel.x - (vel.x + 10) * 0.2f, rigidbody.velocity.y, vel.z -(vel.z + 10) * 0.2f);
-        //}
+        vel = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
         if (vel.normalized.magnitude != 0)
             dir = vel.normalized;
+        if (grounded && dashing == 0)
+            lastVel = rigidbody.velocity;
+
 	}
 
 
@@ -213,6 +166,57 @@ public class PlayerControl : MonoBehaviour {
                 this.hurtPlayer(PlatformManager.lavaDmg);
             }
         }
+    }
+
+    Vector2 calcVel(Vector2 force)
+    {
+        Vector2 vel = Vector2.zero;
+        if (force.x >= 0)
+        {
+            if (rigidbody.velocity.x >= 0)
+            {
+                vel.x = Mathf.Max(force.x * speed, rigidbody.velocity.x);
+            }
+            else
+            {
+                vel.x = rigidbody.velocity.x + force.x * speed * 1f;
+            }
+        }
+        else if (force.x < 0)
+        {
+            if (rigidbody.velocity.x <= 0)
+            {
+                vel.x = Mathf.Min(force.x * speed, rigidbody.velocity.x);
+            }
+            else
+            {
+                vel.x = rigidbody.velocity.x + force.x * speed * 1f;
+            }
+        }
+
+        if (force.y >= 0)
+        {
+            if (rigidbody.velocity.z >= 0)
+            {
+                vel.y = Mathf.Max(force.y * speed, rigidbody.velocity.z);
+            }
+            else
+            {
+                vel.y = rigidbody.velocity.z + force.y * speed * 1f;
+            }
+        }
+        else if (force.y < 0)
+        {
+            if (rigidbody.velocity.z <= 0)
+            {
+                vel.y = Mathf.Min(force.y * speed, rigidbody.velocity.z);
+            }
+            else
+            {
+                vel.y = rigidbody.velocity.z + force.y * speed * 1f;
+            }
+        }
+        return vel;
     }
 
     void groundCheck()
