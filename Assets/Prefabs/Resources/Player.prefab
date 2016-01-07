@@ -97,7 +97,7 @@ MonoBehaviour:
   stamina_reg: 15
   player: 4
   keyboardControl: 0
-  jumpspeed: 10
+  jumpspeed: 15
   curRow: {fileID: 0}
   hpTxt: {fileID: 0}
 --- !u!135 &13524004
@@ -163,6 +163,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: speed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: jumpspeed
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
