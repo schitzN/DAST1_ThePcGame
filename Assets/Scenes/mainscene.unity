@@ -2213,7 +2213,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 881209408}
   m_Layer: 0
-  m_Name: Player3
+  m_Name: Player3gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2241,7 +2241,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 914720946}
   m_Layer: 0
-  m_Name: Player2
+  m_Name: Player2gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2269,7 +2269,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 922624578}
   m_Layer: 0
-  m_Name: Player1
+  m_Name: Player1gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2421,6 +2421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundTimeTxt: {fileID: 1546655752}
   curRoundTime: 0
+  gameRunning: 0
 --- !u!1 &1171563021
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,6 +2552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c103602a5a02e604992bbe3837b0bdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  players: []
+  playerGUIs: []
 --- !u!1 &1444732001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4659,7 +4662,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1684128835}
   m_Layer: 0
-  m_Name: Player4
+  m_Name: Player4gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
