@@ -2319,7 +2319,7 @@ RectTransform:
   m_RootOrder: 5
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.000122, y: -123.5}
+  m_AnchoredPosition: {x: -10, y: -123.5}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1038547671
@@ -3140,8 +3140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d3ae40008979f48855cf38dfa53f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1000
-  stamina: 0
+  speed: 5
+  stamina: 100
   staminaReg: 20
   jumpspeed: 15
 --- !u!1 &1910090425
@@ -4868,7 +4868,7 @@ RectTransform:
   m_RootOrder: 7
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -10.000122, y: 123.5}
+  m_AnchoredPosition: {x: -10, y: 123.50001}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2079175599
