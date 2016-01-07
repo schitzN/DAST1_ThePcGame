@@ -17,6 +17,7 @@ public class GuiControl : MonoBehaviour {
         {
             players[i] = GameObject.Find("Player" + (i + 1)).transform.GetComponent<PlayerControl>();
             playerGUIs[i] = GameObject.Find("Player" + (i + 1) + "gui").transform;
+            playerGUIs[i].transform.FindChild("Stamina").localScale = new Vector3(0, 0.5f, 1);
         }
     }
 

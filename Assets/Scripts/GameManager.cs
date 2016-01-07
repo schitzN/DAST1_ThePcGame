@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour {
     public float curRoundTime = 0;
     private int numPlayers = 4;
     public bool gameRunning = false;
+    public float defaultStaminaBar;
 
 	// Use this for initialization
 	void Start () {
         instance = this;
         this.Players = GameObject.Find("Players").transform;
-
+        this.defaultStaminaBar = GameObject.Find("Player1gui").transform.FindChild("Health").localScale.x;
         StartCoroutine(this.restart());
     }
 	
@@ -57,10 +58,13 @@ public class GameManager : MonoBehaviour {
             pl.transform.position = new Vector3(0, 5f, PlatformManager.instance.getFieldSize() * (i - (this.numPlayers / 2f)) + PlatformManager.instance.getFieldSize() / 2f);
             pl.transform.SetParent(this.Players);
             pl.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Player" + (i + 1));
+
+            GameObject.Find("p" + (i + 1) + " name").GetComponent<Text>().text = "Player " + (i + 1);
+
             PlayerControl pc = pl.GetComponent<PlayerControl>();
+
             pc.gameObject.name = "Player" + (i + 1);
             pc.player = i + 1;
-            pc.healthBar.localScale = new Vector3(pc.initHealthBarWidth, 0.5f, 1);
 
             Color c = new Color(Random.value, Random.value, Random.value, 1f);
             GameObject.Find("Panel" + (i + 1) + " color").GetComponent<Image>().color = c;

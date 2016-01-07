@@ -20,17 +20,15 @@ public class PlayerControl : MonoBehaviour {
     private Vector3 lastVel;
     private Vector3 dir;
     public float health = 100;
-    //public Text hpTxt;
     public Transform healthBar;
-    public float initHealthBarWidth;
     private float dashing = 0;
     private float dashingspeed = 20f;
     private float burnCounter;
     ParticleSystem psys;
 
 	// Use this for initialization
-	void Awake () {
-        
+	void Start () {
+        Debug.Log(player);
         buttons[0] = ("joystick " + player + " button " + Buttons.DASH);
         buttons[1] = ("joystick " + player + " button " + Buttons.SPRINT);
         buttons[2] = ("joystick " + player + " button " + Buttons.INTERACTTOP);
@@ -41,9 +39,10 @@ public class PlayerControl : MonoBehaviour {
         this.mass = rigidbody.mass;
         this.force = speed;
         this.dir = transform.forward;
-        this.healthBar = GameObject.Find("Player" + player + "gui").transform.FindChild("Health");
-        this.initHealthBarWidth = this.healthBar.localScale.x;
         this.psys = GetComponent<ParticleSystem>();
+
+        this.healthBar = GameObject.Find("Player" + this.player + "gui").transform.FindChild("Health");
+        this.healthBar.localScale = new Vector3(GameManager.instance.defaultStaminaBar, this.healthBar.localScale.y, this.healthBar.localScale.z);
     }
 	
 	void Update() {
