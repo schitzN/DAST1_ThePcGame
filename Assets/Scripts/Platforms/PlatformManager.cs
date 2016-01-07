@@ -8,14 +8,16 @@ public class PlatformManager : MonoBehaviour {
 
     public static readonly int maxPlatforms = 4;
     public static float platformGap = 1;
-    public static float platformSpeed = 5;
+    public float platformSpeed = 5;
 
     private List<Platform> _platforms;
     private Platform _platToDestroy;
+    private Transform Players;
 
 	// Use this for initialization
 	void Start () {
         instance = this;
+        this.Players = GameObject.Find("Players").transform;
         this._platforms = new List<Platform>();
 
         for(int i = -1; i < maxPlatforms - 1; i++)
@@ -34,6 +36,7 @@ public class PlatformManager : MonoBehaviour {
                 this._platToDestroy = p;
             }
         }
+        Players.Translate(Vector3.left * platformSpeed * Time.deltaTime);
 
         if(this._platToDestroy != null)
         {
