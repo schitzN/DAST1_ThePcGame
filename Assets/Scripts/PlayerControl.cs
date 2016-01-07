@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerControl : MonoBehaviour {
-    public float speed = 10;
+    public float speed = 10000;
     private float force;
     private float mass;
     public float stamina = 0;
@@ -18,8 +18,11 @@ public class PlayerControl : MonoBehaviour {
     private bool grounded = true;
     private SphereCollider col;
     private Vector3 lastVel;
+    private Vector3 dir;
     private float health = 100;
     public Text hpTxt;
+    private float dashing = 0;
+    private float dashingspeed = 30f;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +36,7 @@ public class PlayerControl : MonoBehaviour {
         this.col = this.GetComponent<SphereCollider>();
         this.mass = rigidbody.mass;
         this.force = speed;
+        this.dir = transform.forward;
 	}
 	
 	void Update() {
@@ -49,15 +53,24 @@ public class PlayerControl : MonoBehaviour {
         {
             this.rigidbody.velocity = new Vector3(this.rigidbody.velocity.x,jumpspeed, this.rigidbody.velocity.z);
         }
-        if (grounded)
+        if (grounded && dashing == 0)
             lastVel = rigidbody.velocity;
+        if(dashing > 0)
+            this.dashing -= Time.deltaTime;
+        if (dashing < 0)
+        {
+            dashing = 0;
+            //this.rigidbody.velocity = this.rigidbody.velocity.normalized * 10f;
+        }
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        rigidbody.mass = mass * Mathf.Max(rigidbody.velocity.magnitude, 1);
-        this.force = speed * Mathf.Max(rigidbody.velocity.magnitude, 1);
-        stamina += stamina_reg*Time.deltaTime;
+
+
+
+        stamina += stamina_reg * Time.deltaTime;
         stamina = Mathf.Min(stamina, 100);
         
 
@@ -66,17 +79,81 @@ public class PlayerControl : MonoBehaviour {
             force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();
+         rigidbody.mass = mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
+         this.force = speed * Mathf.Min(rigidbody.velocity.magnitude, 1);
+
         if (keyDown("Sprint"))
         {
             force *= 1.8f;
             this.stamina = Mathf.Max(this.stamina - 1f, 0);
         }
-        if (grounded)
-            rigidbody.AddForce(force.x * this.force, 0, force.y * this.force);
-        else
+        if (grounded && dashing == 0)
+        {
+            float x = 0;
+            float z = 0;
+            //rigidbody.AddForce(force.x * this.force, 0, force.y * this.force);
+            if (force.x >= 0)
+            {
+                if (rigidbody.velocity.x >= 0)
+                {
+                    x = Mathf.Max(force.x * speed, rigidbody.velocity.x);
+                }
+                else
+                {
+                    x = rigidbody.velocity.x + force.x * speed * 1f;
+                }
+            }
+            else if (force.x < 0)
+            {
+                if (rigidbody.velocity.x <= 0)
+                {
+                    x = Mathf.Min(force.x * speed, rigidbody.velocity.x);
+                }
+                else
+                {
+                    x = rigidbody.velocity.x + force.x * speed * 1f;
+                }
+            }
+
+            if (force.y >= 0)
+            {
+                if (rigidbody.velocity.z >= 0)
+                {
+                    z = Mathf.Max(force.y * speed, rigidbody.velocity.z);
+                }
+                else
+                {
+                    z = rigidbody.velocity.z + force.y * speed * 1f;
+                }
+            }
+            else if (force.y < 0)
+            {
+                if (rigidbody.velocity.z <= 0)
+                {
+                    z = Mathf.Min(force.y * speed, rigidbody.velocity.z);
+                }
+                else
+                {
+                    z = rigidbody.velocity.z + force.y * speed * 1f;
+                }
+            }
+
+            //float x = force.x > 0 ? Mathf.Max(force.x * speed * 0.01f, rigidbody.velocity.x) : Mathf.Min(force.x * speed * 0.01f, rigidbody.velocity.x);
+            //float z = force.y > 0 ? Mathf.Max(force.y * speed * 0.01f, rigidbody.velocity.z) : Mathf.Min(force.y * speed * 0.01f, rigidbody.velocity.z);
+            rigidbody.velocity = new Vector3(x, rigidbody.velocity.y, z);
+        }
+        else if (!grounded)
             rigidbody.velocity = new Vector3(lastVel.x, rigidbody.velocity.y, lastVel.z);
+
         checkPlatforms();
         groundCheck();
+        Vector3 vel = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
+        //if (vel.magnitude > 10 && dashing == 0)
+        //{
+        //    rigidbody.velocity = new Vector3(vel.x - (vel.x + 10) * 0.2f, rigidbody.velocity.y, vel.z -(vel.z + 10) * 0.2f);
+        //}
+        if (vel.normalized.magnitude != 0)
+            dir = vel.normalized;
 	}
 
 
@@ -114,7 +191,8 @@ public class PlayerControl : MonoBehaviour {
         if (stamina >= 70)
         {
             this.stamina -= 70;
-            rigidbody.velocity *= 5;
+            this.dashing = 0.05f;
+            rigidbody.velocity = dir * dashingspeed;
         }
     }
 
