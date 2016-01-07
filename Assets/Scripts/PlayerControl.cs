@@ -25,6 +25,8 @@ public class PlayerControl : MonoBehaviour {
     public float initHealthBarWidth;
     private float dashing = 0;
     private float dashingspeed = 20f;
+    private float burnCounter;
+    ParticleSystem psys;
 
 	// Use this for initialization
 	void Awake () {
@@ -41,6 +43,7 @@ public class PlayerControl : MonoBehaviour {
         this.dir = transform.forward;
         this.healthBar = GameObject.Find("Player" + player + "gui").transform.FindChild("Health");
         this.initHealthBarWidth = this.healthBar.localScale.x;
+        this.psys = GetComponent<ParticleSystem>();
     }
 	
 	void Update() {
@@ -57,7 +60,16 @@ public class PlayerControl : MonoBehaviour {
         {
             this.rigidbody.velocity = new Vector3(this.rigidbody.velocity.x,jumpspeed, this.rigidbody.velocity.z);
         }
-
+        if (burnCounter > 0)
+            burnCounter -= Time.deltaTime;
+        if (burnCounter < 0)
+        {
+            burnCounter = 0;
+            psys.Stop();
+            this.GetComponent<AudioSource>().Stop();
+        }
+        if (psys.particleCount < 10 && burnCounter <= 0)
+            GetComponent<ParticleSystemRenderer>().enabled = false;
         if(dashing > 0)
             this.dashing -= Time.deltaTime;
         if (dashing < 0)
@@ -246,6 +258,11 @@ public class PlayerControl : MonoBehaviour {
         this.healthBar.localScale = new Vector3(this.healthBar.localScale.x + (health / 15f - this.healthBar.localScale.x) * 0.25f, 0.5f, 1);
 
         //this.hpTxt.text = "HP: " + (int)this.health;
+        this.burnCounter = 0.5f;
+        GetComponent<ParticleSystemRenderer>().enabled = true;
+        psys.Play();
+        if (!this.GetComponent<AudioSource>().isPlaying)
+            this.GetComponent<AudioSource>().Play();
 
         if (this.health < 0)
         {
