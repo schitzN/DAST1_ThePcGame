@@ -5,15 +5,11 @@ public class Field_Obstacle : absField {
 
 	// Use this for initialization
 	void Start () {
+        this._fieldType = FieldTypes.OBSTACLE;
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
-    protected override void InitField()
-    {
-        this._fieldType = FieldTypes.OBSTACLE;
-    }
 }

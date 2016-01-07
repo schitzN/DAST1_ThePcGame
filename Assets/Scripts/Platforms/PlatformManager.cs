@@ -30,13 +30,14 @@ public class PlatformManager : MonoBehaviour {
 	void Update () {
         foreach(Platform p in this._platforms)
         {
+            //p.getRigidbody().MovePosition(new Vector3(p.transform.position.x + (-1 * platformSpeed * Time.deltaTime), 0, 0));
             p.transform.Translate(Vector3.left * platformSpeed * Time.deltaTime);
             if(p.transform.position.x < (Platform.platformSize + platformGap) * -2)
             {
                 this._platToDestroy = p;
             }
         }
-        Players.Translate(Vector3.left * platformSpeed * Time.deltaTime);
+        Players.Translate(new Vector3((-1 * platformSpeed * Time.deltaTime), 0, 0));
 
         if(this._platToDestroy != null)
         {

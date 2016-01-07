@@ -6,16 +6,11 @@ public class Field_Empty : absField {
 
     // Use this for initialization
     void Start () {
-        
-	}
+        this._fieldType = FieldTypes.EMPTY;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
-    protected override void InitField()
-    {
-        this._fieldType = FieldTypes.EMPTY;
-    }
 }
