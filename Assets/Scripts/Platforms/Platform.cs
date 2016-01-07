@@ -6,6 +6,7 @@ public class Platform : MonoBehaviour {
     public static readonly int platformSize = 20;
     public static readonly int gridSize = 6;
     public static readonly int maxObstacles = 10;
+    public static float fieldSwapSpeed = 5f;
 
     //private GameObject platObj;
     private Rigidbody rigid;
@@ -43,6 +44,12 @@ public class Platform : MonoBehaviour {
 
     public void changeRow(absField field)
     {
+        if (field.getIsMoving())
+        {
+            Debug.Log("Field already moving!");
+            return;
+        }
+
         int row = this.findRow(field);
 
         if (row == -1)
@@ -59,10 +66,10 @@ public class Platform : MonoBehaviour {
                 this.numObstacles--;
 
             //Debug.Log(this.numObstacles + ", " + fld.getFieldType());
+            Vector3 newPos = new Vector3(fld.transform.position.x, fld.transform.position.y, fld.transform.position.z + this.fieldSize * gridSize);
+            this.createRndField(fld.transform.localScale, newPos, row, y).transform.SetParent(fld.transform.parent);
 
-            this.createRndField(fld.transform.localScale, fld.transform.position, row, y).transform.SetParent(fld.transform.parent);
-
-            Destroy(fld.gameObject);
+            //Destroy(fld.gameObject);
         }
     }
 

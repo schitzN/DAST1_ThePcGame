@@ -8,7 +8,7 @@ public class PlatformManager : MonoBehaviour {
 
     public static readonly int maxPlatforms = 4;
     public static float platformGap = 1;
-    public static float platformSpeed = 5;
+    public static float platformSpeed = 3;
 
     private List<Platform> _platforms;
     private Platform _platToDestroy;

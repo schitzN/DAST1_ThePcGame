@@ -6,6 +6,7 @@ public abstract class absField : MonoBehaviour
     public enum FieldTypes { EMPTY, OBSTACLE };
 
     protected FieldTypes _fieldType;
+
     protected bool _isMoving = false;
 
 
