@@ -20,19 +20,11 @@ public class PlatformManager : MonoBehaviour {
     private float fieldSize;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         // init
         instance = this;
         this.Players = GameObject.Find("Players").transform;
-        this._platformRows = new List<PlatformRow>();
-
-        // create rows
         this.fieldSize = platformHeight / (float)gridSize;
-
-        for (int i = -(maxPlatforms / 2); i < (maxPlatforms / 2); i++)
-        {
-            this.createPlatform(new Vector3((this.fieldSize + platformGap) * i, 0, 0));
-        }
     }
 	
 	// Update is called once per frame
@@ -61,6 +53,27 @@ public class PlatformManager : MonoBehaviour {
             // TODO: Fix gap when new row is created
         }
 	}
+
+    private void resetVars()
+    {
+        if(this._platformRows != null)
+            foreach (PlatformRow r in this._platformRows)
+                Destroy(r.gameObject);
+
+        this._platformRows = new List<PlatformRow>();
+    }
+
+    public void initNewWorld()
+    {
+        this.resetVars();
+
+
+
+        for (int i = -(maxPlatforms / 2); i < (maxPlatforms / 2); i++)
+        {
+            this.createPlatform(new Vector3((this.fieldSize + platformGap) * i, 0, 0));
+        }
+    }
 
     public void swapRow(PlatformRow row, bool fromTop)
     {

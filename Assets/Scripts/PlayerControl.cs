@@ -156,7 +156,7 @@ public class PlayerControl : MonoBehaviour {
         RaycastHit hit;
         Vector3 down = transform.TransformDirection(Vector3.down);
         
-        if (Physics.Raycast(transform.position, down, out hit, 10f, 1 << LayerMask.NameToLayer("World")))
+        if (Physics.Raycast(transform.position, down, out hit, 1f, 1 << LayerMask.NameToLayer("World")))
         {
             PlatformRow row = hit.transform.GetComponent<PlatformRow>();
 
@@ -195,6 +195,7 @@ public class PlayerControl : MonoBehaviour {
         if(this.health < 0)
         {
             this.hpTxt.text = "DEAD";
+            GameManager.instance.playerDied();
             Destroy(this.gameObject);
         }
     }

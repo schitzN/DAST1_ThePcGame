@@ -65,7 +65,7 @@ public class PlatformRow : MonoBehaviour {
     {
         GameObject field;
 
-        float chance = ((Time.time / this.timeDifficulty) / this.maxDifficulty) / System.Enum.GetNames(typeof(absField.FieldTypes)).Length;
+        float chance = ((GameManager.instance.curRoundTime / this.timeDifficulty) / this.maxDifficulty) / System.Enum.GetNames(typeof(absField.FieldTypes)).Length;
 
         if (forceEmpty)
         {
