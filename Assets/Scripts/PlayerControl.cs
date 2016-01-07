@@ -39,7 +39,7 @@ public class PlayerControl : MonoBehaviour {
         this.mass = rigidbody.mass;
         this.force = speed;
         this.dir = transform.forward;
-        this.healthBar = GameObject.Find("p" + player + "Health").transform;//.transform.FindChild("Health");
+        this.healthBar = GameObject.Find("Player" + player + "gui").transform.FindChild("Health");
         this.initHealthBarWidth = this.healthBar.localScale.x;
     }
 	
