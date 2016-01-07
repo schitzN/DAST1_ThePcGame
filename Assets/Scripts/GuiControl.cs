@@ -25,7 +25,7 @@ public class GuiControl : MonoBehaviour {
         for (int i = 0; i < players.Length; i++)
         {
             Vector3 scale = playerGUIs[i].FindChild("Stamina").localScale;
-            playerGUIs[i].FindChild("Stamina").localScale = new Vector3(scale.x + (players[i].stamina/10f - scale.x) *0.25f,1,1);
+            playerGUIs[i].FindChild("Stamina").localScale = new Vector3(scale.x + (players[i].stamina/15f - scale.x) *0.25f,0.5f,1);
         }
 	}
 }

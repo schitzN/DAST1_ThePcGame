@@ -46,12 +46,14 @@ public class PlatformManager : MonoBehaviour {
         if(this._platToDestroy != null)
         {
             // destroy old
+            float x = this._platToDestroy.transform.position.x;
             this._platformRows.Remove(this._platToDestroy);
             Destroy(this._platToDestroy.gameObject);
             this._platToDestroy = null;
 
             // create new
-            this.createPlatform(new Vector3((fieldSize + platformGap) * (maxPlatforms / 2), 0, 0));
+            //this.createPlatform(new Vector3((fieldSize + platformGap) * (maxPlatforms / 2), 0, 0));
+            this.createPlatform(new Vector3(x + (fieldSize + platformGap) * maxPlatforms, 0, 0));
 
             // TODO: Fix gap when new row is created
         }
