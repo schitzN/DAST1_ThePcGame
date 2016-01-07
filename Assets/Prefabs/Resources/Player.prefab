@@ -96,10 +96,10 @@ MonoBehaviour:
   stamina: 0
   stamina_reg: 15
   player: 4
-  keyboardControl: 1
+  keyboardControl: 0
   jumpspeed: 10
   curRow: {fileID: 0}
-  curField: {fileID: 0}
+  hpTxt: {fileID: 0}
 --- !u!135 &13524004
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -147,6 +147,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: keyboardControl
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
