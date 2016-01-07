@@ -22,7 +22,7 @@ public class PlayerControl : MonoBehaviour {
     private float health = 100;
     public Text hpTxt;
     private float dashing = 0;
-    private float dashingspeed = 30f;
+    private float dashingspeed = 20f;
 
 	// Use this for initialization
 	void Start () {
@@ -59,7 +59,6 @@ public class PlayerControl : MonoBehaviour {
         if (dashing < 0)
         {
             dashing = 0;
-            //this.rigidbody.velocity = this.rigidbody.velocity.normalized * 10f;
         }
 
 	}
@@ -78,33 +77,34 @@ public class PlayerControl : MonoBehaviour {
             force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();
-         rigidbody.mass = mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
+        rigidbody.mass = dashing > 0 ? mass * Mathf.Max(rigidbody.velocity.magnitude * 2f, 3) : mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
          this.force = speed * Mathf.Min(rigidbody.velocity.magnitude, 1);
 
         if (keyDown("Sprint"))
         {
-            force *= 1.8f;
+            force *= 1.5f;
             this.stamina = Mathf.Max(this.stamina - 1f, 0);
         }
         Vector2 vel = calcVel(force);
 
-        if (grounded && dashing == 0)
+        if (grounded)
         {
-            
-            //rigidbody.AddForce(force.x * this.force, 0, force.y * this.force);
-            
             rigidbody.velocity = new Vector3(vel.x, rigidbody.velocity.y, vel.y);
         }
-        else if (!grounded)
+        else
+        {
             rigidbody.velocity = new Vector3(lastVel.x, rigidbody.velocity.y, lastVel.z);
-        if (!grounded && dashing == 0)
-            lastVel = lastVel + (new Vector3(vel.x,0,vel.y) - new Vector3(lastVel.x,0,lastVel.z)) * Time.deltaTime * 3f;
+            lastVel = lastVel + (new Vector3(vel.x, 0, vel.y) - new Vector3(lastVel.x, 0, lastVel.z)) * Time.deltaTime * 3f;
+        }
+
         checkPlatforms();
         groundCheck();
-        vel = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
-        if (vel.normalized.magnitude != 0)
-            dir = vel.normalized;
-        if (grounded && dashing == 0)
+
+        Vector3 velo = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
+        if (velo.normalized.magnitude != 0)
+            dir = velo.normalized;
+
+        if (grounded)
             lastVel = rigidbody.velocity;
 
 	}
@@ -144,7 +144,7 @@ public class PlayerControl : MonoBehaviour {
         if (stamina >= 70)
         {
             this.stamina -= 70;
-            this.dashing = 0.05f;
+            this.dashing = 0.25f;
             rigidbody.velocity = dir * dashingspeed;
         }
     }
