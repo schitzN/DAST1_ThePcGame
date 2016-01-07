@@ -34,7 +34,7 @@ public class PlatformManager : MonoBehaviour {
         if (!GameManager.instance.gameRunning)
             return;
 
-        PlatformManager.platformSpeed = GameManager.instance.curRoundTime > 3? Mathf.Floor(basePlatformSpeed * Mathf.Max((GameManager.instance.curRoundTime+60f)/120f,1)) : GameManager.instance.curRoundTime/3f * basePlatformSpeed;
+        PlatformManager.platformSpeed = GameManager.instance.curRoundTime > 5? Mathf.Floor(basePlatformSpeed * Mathf.Max((GameManager.instance.curRoundTime+60f)/120f,1)) : Mathf.Max((GameManager.instance.curRoundTime-1)/4f,0) * basePlatformSpeed;
 
         foreach (PlatformRow p in this._platformRows)
         {

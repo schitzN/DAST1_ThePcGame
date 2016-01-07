@@ -23,6 +23,7 @@ public class PlayerControl : MonoBehaviour {
     public Text hpTxt;
     private float dashing = 0;
     private float dashingspeed = 20f;
+    private float burnCounter;
 
 	// Use this for initialization
 	void Start () {
@@ -53,7 +54,14 @@ public class PlayerControl : MonoBehaviour {
         {
             this.rigidbody.velocity = new Vector3(this.rigidbody.velocity.x,jumpspeed, this.rigidbody.velocity.z);
         }
-
+        if (burnCounter > 0)
+            burnCounter -= Time.deltaTime;
+        if (burnCounter < 0)
+        {
+            burnCounter = 0;
+            this.GetComponent<ParticleSystem>().Stop();
+            this.GetComponent<AudioSource>().Stop();
+        }
         if(dashing > 0)
             this.dashing -= Time.deltaTime;
         if (dashing < 0)
@@ -240,7 +248,10 @@ public class PlayerControl : MonoBehaviour {
     {
         this.health -= damage;
         this.hpTxt.text = "HP: " + (int)this.health;
-
+        this.burnCounter = 0.5f;
+        this.GetComponent<ParticleSystem>().Play();
+        if(!this.GetComponent<AudioSource>().isPlaying)
+            this.GetComponent<AudioSource>().Play();
         if(this.health < 0)
         {
             this.hpTxt.text = "DEAD";
