@@ -922,7 +922,7 @@ ParticleSystem:
   VelocityModule:
     enabled: 1
     x:
-      scalar: -2
+      scalar: -3
       maxCurve:
         serializedVersion: 2
         m_Curve:
