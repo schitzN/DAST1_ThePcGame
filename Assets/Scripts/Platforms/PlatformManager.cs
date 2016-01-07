@@ -29,7 +29,10 @@ public class PlatformManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        foreach(PlatformRow p in this._platformRows)
+        if (!GameManager.instance.gameRunning)
+            return;
+
+        foreach (PlatformRow p in this._platformRows)
         {
             //p.getRigidbody().MovePosition(new Vector3(p.transform.position.x + (-1 * platformSpeed * Time.deltaTime), 0, 0));
             p.transform.Translate(Vector3.left * platformSpeed * Time.deltaTime);
@@ -66,8 +69,6 @@ public class PlatformManager : MonoBehaviour {
     public void initNewWorld()
     {
         this.resetVars();
-
-
 
         for (int i = -(maxPlatforms / 2); i < (maxPlatforms / 2); i++)
         {

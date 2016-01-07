@@ -9,18 +9,22 @@ public class GameManager : MonoBehaviour {
     private Transform Players;
     public Text roundTimeTxt;
     public float curRoundTime = 0;
-    private float numPlayers = 4;
+    private int numPlayers = 4;
+    public bool gameRunning = false;
 
 	// Use this for initialization
 	void Start () {
         instance = this;
         this.Players = GameObject.Find("Players").transform;
 
-        this.restart();
-	}
+        StartCoroutine(this.restart());
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (!gameRunning)
+            return;
+
         this.curRoundTime += Time.deltaTime;
         this.roundTimeTxt.text = "ROUND TIME\n" + (int)this.curRoundTime;
 	}
@@ -30,11 +34,17 @@ public class GameManager : MonoBehaviour {
         this.numPlayers--;
 
         if (this.numPlayers <= 0)
-            this.restart();
+        {
+            this.gameRunning = false;
+            StartCoroutine(this.restart());
+        }
+            
     }
 
-    public void restart()
+    public IEnumerator restart()
     {
+        yield return new WaitForEndOfFrame();
+
         this.curRoundTime = 0;
         this.numPlayers = 4;
 
@@ -46,6 +56,7 @@ public class GameManager : MonoBehaviour {
             pl.transform.SetParent(this.Players);
 
             PlayerControl pc = pl.GetComponent<PlayerControl>();
+            pc.gameObject.name = "Player" + (i + 1);
             pc.player = i + 1;
             pc.hpTxt = GameObject.Find("p" + (i + 1) + " health").GetComponent<Text>();
             pc.hpTxt.text = "HP: " + 100;
@@ -55,5 +66,11 @@ public class GameManager : MonoBehaviour {
         }
 
         PlatformManager.instance.initNewWorld();
+        GameObject.Find("Gui").GetComponent<GuiControl>().restart();
+
+        this.gameRunning = true;
+        yield return null;
     }
+
+    public int getNumPlayers() { return this.numPlayers; }
 }

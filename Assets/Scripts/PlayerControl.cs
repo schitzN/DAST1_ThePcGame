@@ -240,8 +240,8 @@ public class PlayerControl : MonoBehaviour {
         if(this.health < 0)
         {
             this.hpTxt.text = "DEAD";
-            GameManager.instance.playerDied();
             Destroy(this.gameObject);
+            GameManager.instance.playerDied();
         }
     }
 }

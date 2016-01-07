@@ -2,14 +2,24 @@
 using System.Collections;
 
 public class GuiControl : MonoBehaviour {
-    PlayerControl[] players;
-    Transform[] playerGUIs;
+    public PlayerControl[] players;
+    public Transform[] playerGUIs;
 	// Use this for initialization
 	void Start () {
-        players = GameObject.Find("Players").transform.GetComponentsInChildren<PlayerControl>();
-        playerGUIs = new Transform[] { transform.FindChild("Player1"), transform.FindChild("Player2"), transform.FindChild("Player3"), transform.FindChild("Player4") };
 	}
 	
+    public void restart()
+    {
+        players = new PlayerControl[GameManager.instance.getNumPlayers()];
+        playerGUIs = new Transform[GameManager.instance.getNumPlayers()];
+
+        for(int i = 0; i < GameManager.instance.getNumPlayers(); i++)
+        {
+            players[i] = GameObject.Find("Player" + (i + 1)).transform.GetComponent<PlayerControl>();
+            playerGUIs[i] = GameObject.Find("Player" + (i + 1) + "gui").transform;
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
         for (int i = 0; i < players.Length; i++)
