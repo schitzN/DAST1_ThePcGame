@@ -56,8 +56,11 @@ public class PlayerControl : MonoBehaviour {
             force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();
-        if(keyDown("Sprint"))
-            force *= 2;
+        if (keyDown("Sprint"))
+        {
+            force *= 1.8f;
+            this.stamina = Mathf.Max(this.stamina - 1f, 0);
+        }
         if (grounded)
             rigidbody.AddForce(force.x * speed, 0, force.y * speed);
         else
