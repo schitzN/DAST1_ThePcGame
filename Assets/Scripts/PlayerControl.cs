@@ -19,13 +19,15 @@ public class PlayerControl : MonoBehaviour {
     private SphereCollider col;
     private Vector3 lastVel;
     private Vector3 dir;
-    private float health = 100;
-    public Text hpTxt;
+    public float health = 100;
+    //public Text hpTxt;
+    public Transform healthBar;
+    public float initHealthBarWidth;
     private float dashing = 0;
     private float dashingspeed = 20f;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         
         buttons[0] = ("joystick " + player + " button " + Buttons.DASH);
         buttons[1] = ("joystick " + player + " button " + Buttons.SPRINT);
@@ -37,7 +39,9 @@ public class PlayerControl : MonoBehaviour {
         this.mass = rigidbody.mass;
         this.force = speed;
         this.dir = transform.forward;
-	}
+        this.healthBar = GameObject.Find("p" + player + "Health").transform;//.transform.FindChild("Health");
+        this.initHealthBarWidth = this.healthBar.localScale.x;
+    }
 	
 	void Update() {
 		if (keyDown("Dash") && grounded)
@@ -239,13 +243,15 @@ public class PlayerControl : MonoBehaviour {
     public void hurtPlayer(float damage)
     {
         this.health -= damage;
-        this.hpTxt.text = "HP: " + (int)this.health;
+        this.healthBar.localScale = new Vector3(this.healthBar.localScale.x + (health / 15f - this.healthBar.localScale.x) * 0.25f, 0.5f, 1);
 
-        if(this.health < 0)
+        //this.hpTxt.text = "HP: " + (int)this.health;
+
+        if (this.health < 0)
         {
-            this.hpTxt.text = "DEAD";
+            //this.hpTxt.text = "DEAD";
             Destroy(this.gameObject);
-            GameManager.instance.playerDied();
+            GameManager.instance.playerDied(this);
         }
     }
 }

@@ -29,9 +29,10 @@ public class GameManager : MonoBehaviour {
         this.roundTimeTxt.text = "ROUND TIME\n" + (int)this.curRoundTime;
 	}
 
-    public void playerDied()
+    public void playerDied(PlayerControl player)
     {
         this.numPlayers--;
+        GameObject.Find("p" + player.player + " name").GetComponent<Text>().text = "D E A D";
 
         if (this.numPlayers <= 0)
         {
@@ -58,8 +59,11 @@ public class GameManager : MonoBehaviour {
             PlayerControl pc = pl.GetComponent<PlayerControl>();
             pc.gameObject.name = "Player" + (i + 1);
             pc.player = i + 1;
-            pc.hpTxt = GameObject.Find("p" + (i + 1) + " health").GetComponent<Text>();
-            pc.hpTxt.text = "HP: " + 100;
+            pc.healthBar.localScale = new Vector3(pc.initHealthBarWidth, 0.5f, 1);
+
+            Color c = new Color(Random.value, Random.value, Random.value, 1f);
+            GameObject.Find("Panel" + (i + 1) + " color").GetComponent<Image>().color = c;
+            pl.GetComponent<Renderer>().material.color = c;
 
             if (i == this.numPlayers - 1)
                 pc.keyboardControl = true;
