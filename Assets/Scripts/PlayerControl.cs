@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PlayerControl : MonoBehaviour {
     public float speed = 10;
+    private float force;
+    private float mass;
     public float stamina = 0;
     public float stamina_reg = 15;
     public int player = 1;
@@ -18,6 +20,7 @@ public class PlayerControl : MonoBehaviour {
     private Vector3 lastVel;
 	// Use this for initialization
 	void Start () {
+        
         buttons[0] = ("joystick " + player + " button " + Buttons.DASH);
         buttons[1] = ("joystick " + player + " button " + Buttons.SPRINT);
         buttons[2] = ("joystick " + player + " button " + Buttons.INTERACTTOP);
@@ -25,6 +28,8 @@ public class PlayerControl : MonoBehaviour {
         buttons[4] = ("joystick " + player + " button " + Buttons.JUMP);
         this.rigidbody = this.GetComponent<Rigidbody>();
         this.col = this.GetComponent<SphereCollider>();
+        this.mass = rigidbody.mass;
+        this.force = speed;
 	}
 	
 	void Update() {
@@ -47,6 +52,8 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        rigidbody.mass = mass * Mathf.Max(rigidbody.velocity.magnitude, 1);
+        this.force = speed * Mathf.Max(rigidbody.velocity.magnitude, 1);
         stamina += stamina_reg*Time.deltaTime;
         stamina = Mathf.Min(stamina, 100);
         
@@ -62,7 +69,7 @@ public class PlayerControl : MonoBehaviour {
             this.stamina = Mathf.Max(this.stamina - 1f, 0);
         }
         if (grounded)
-            rigidbody.AddForce(force.x * speed, 0, force.y * speed);
+            rigidbody.AddForce(force.x * this.force, 0, force.y * this.force);
         else
             rigidbody.velocity = new Vector3(lastVel.x, rigidbody.velocity.y, lastVel.z);
         checkPlatforms();
@@ -131,4 +138,16 @@ public class PlayerControl : MonoBehaviour {
     {
         grounded = Physics.CheckSphere(col.center + transform.position, col.radius, 1 << LayerMask.NameToLayer("World"));
     }
+
+    /*
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Players"))
+        {
+            other.collider.attachedRigidbody.AddForce((other.transform.position - this.transform.position) * 1000f * Vector3.Cross(this.rigidbody.velocity , (other.transform.position - this.transform.position)).magnitude);
+        //    other.collider.attachedRigidbody.velocity = other.collider.attachedRigidbody.velocity + other.impulse.normalized * 10f;
+        //    this.rigidbody.velocity = this.rigidbody.velocity + other.impulse.normalized * -10f;
+        }
+    }
+     * */
 }
