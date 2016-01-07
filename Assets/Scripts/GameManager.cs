@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
 
         this.curRoundTime = 0;
         this.numPlayers = 4;
+        
 
         for(int i = 0; i < this.numPlayers; i++)
         {
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour {
 
             pl.transform.position = new Vector3(0, 5f, PlatformManager.instance.getFieldSize() * (i - (this.numPlayers / 2f)) + PlatformManager.instance.getFieldSize() / 2f);
             pl.transform.SetParent(this.Players);
-
+            pl.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Player" + (i + 1));
             PlayerControl pc = pl.GetComponent<PlayerControl>();
             pc.gameObject.name = "Player" + (i + 1);
             pc.player = i + 1;

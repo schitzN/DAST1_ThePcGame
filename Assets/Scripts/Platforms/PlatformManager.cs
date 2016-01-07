@@ -12,6 +12,7 @@ public class PlatformManager : MonoBehaviour {
     public static readonly float lavaDmg = 0.5f;
     public static float platformGap = 0;
     public static float platformSpeed = 3f;
+    private float basePlatformSpeed;
 
     private List<PlatformRow> _platformRows;
     private PlatformRow _platToDestroy;
@@ -25,12 +26,15 @@ public class PlatformManager : MonoBehaviour {
         instance = this;
         this.Players = GameObject.Find("Players").transform;
         this.fieldSize = platformHeight / (float)gridSize;
+        this.basePlatformSpeed = platformSpeed;
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (!GameManager.instance.gameRunning)
             return;
+
+        PlatformManager.platformSpeed = GameManager.instance.curRoundTime > 3? Mathf.Floor(basePlatformSpeed * Mathf.Max((GameManager.instance.curRoundTime+60f)/120f,1)) : GameManager.instance.curRoundTime/3f * basePlatformSpeed;
 
         foreach (PlatformRow p in this._platformRows)
         {

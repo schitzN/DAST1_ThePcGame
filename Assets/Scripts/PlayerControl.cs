@@ -115,19 +115,19 @@ public class PlayerControl : MonoBehaviour {
         switch (type)
         {
             case "Dash":
-                if (Input.GetKeyDown(buttons[0]) || (keyboardControl && Input.GetKeyDown(KeyCode.X)))
+                if (Input.GetKeyDown(buttons[0]) || (keyboardControl && Input.GetKeyDown(KeyCode.Y)))
                     return true;
                 break;
             case "Sprint":
-                if (Input.GetKey(buttons[1]) || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
+                if (Input.GetAxis("Trigger"+player) != 0 || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
                     return true;
                 break;
             case "InteractTop":
-                if (Input.GetKeyDown(buttons[2]) || (keyboardControl && Input.GetKeyDown(KeyCode.C)))
+                if (Input.GetKeyDown(buttons[2]) || (keyboardControl && Input.GetKeyDown(KeyCode.X)))
                     return true;
                 break;
             case "InteractBottom":
-                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.V)))
+                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.C)))
                     return true;
                 break;
             case "Jump":
