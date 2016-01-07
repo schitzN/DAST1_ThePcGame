@@ -37,7 +37,7 @@ public class PlatformManager : MonoBehaviour {
                 this._platToDestroy = p;
             }
         }
-        Players.Translate(new Vector3((-1 * platformSpeed * Time.deltaTime), 0, 0));
+        Players.Translate(Vector3.left * platformSpeed * Time.deltaTime);
 
         if(this._platToDestroy != null)
         {
