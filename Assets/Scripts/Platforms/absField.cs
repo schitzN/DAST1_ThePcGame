@@ -12,16 +12,12 @@ public abstract class absField : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.InitField();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
-
-    protected abstract void InitField();
 
     public FieldTypes getFieldType() { return this._fieldType; }
     public bool getIsMoving() { return this._isMoving; }

@@ -7,7 +7,8 @@ public class Platform : MonoBehaviour {
     public static readonly int gridSize = 6;
     public static readonly int maxObstacles = 10;
 
-    private GameObject platObj;
+    //private GameObject platObj;
+    private Rigidbody rigid;
     private absField[,] grid;
     private float fieldSize;
     private int numObstacles = 0;
@@ -15,8 +16,8 @@ public class Platform : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // init platform
-        this.platObj = this.gameObject;
-        //this.platObj.transform.localScale = new Vector3(platformSize, 1, platformSize);
+        //this.platObj = this.gameObject;
+        this.rigid = this.GetComponent<Rigidbody>();
         this.grid = new absField[gridSize, gridSize];
         this.fieldSize = platformSize / (float)gridSize;
 
@@ -25,22 +26,12 @@ public class Platform : MonoBehaviour {
         {
             for (int y = -(gridSize / 2); y < (gridSize / 2); y++)
             {
-                GameObject field;
+                GameObject field = this.createRndField( new Vector3(fieldSize, 1, fieldSize),
+                                                        new Vector3((x * fieldSize + fieldSize / 2f) + this.transform.position.x, 0, (y * fieldSize + fieldSize / 2f) + this.transform.position.z),
+                                                        x + (gridSize / 2),
+                                                        y + (gridSize / 2));
                 
-                if(Random.value < 0.2f && this.numObstacles < maxObstacles)
-                {
-                    field = Instantiate(Resources.Load<GameObject>("Field_Obstacle"));
-                    this.numObstacles++;
-                }
-                else
-                {
-                    field = Instantiate(Resources.Load<GameObject>("Field_Empty"));
-                }
-
-                field.transform.localScale = new Vector3(fieldSize, 1, fieldSize);
-                field.transform.localPosition = new Vector3((x * fieldSize + fieldSize / 2f) + this.transform.position.x, 0, (y * fieldSize + fieldSize / 2f) + this.transform.position.z);
                 field.transform.SetParent(this.transform);
-                this.grid[x + (gridSize / 2), y + (gridSize / 2)] = field.GetComponent<absField>();
             }
         }
 	}
@@ -49,4 +40,62 @@ public class Platform : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public void changeRow(absField field)
+    {
+        int row = this.findRow(field);
+
+        if (row == -1)
+        {
+            Debug.Log("Field not found: " + field);
+            return;
+        }
+            
+        for (int y = 0; y < gridSize; y++)
+        {
+            absField fld = this.grid[row, y];
+
+            if (fld.getFieldType() == absField.FieldTypes.OBSTACLE)
+                this.numObstacles--;
+
+            //Debug.Log(this.numObstacles + ", " + fld.getFieldType());
+
+            this.createRndField(fld.transform.localScale, fld.transform.position, row, y).transform.SetParent(fld.transform.parent);
+
+            Destroy(fld.gameObject);
+        }
+    }
+
+    private int findRow(absField field)
+    {
+        for(int x = 0; x < gridSize; x++)
+            for (int y = 0; y < gridSize; y++)
+                if (this.grid[x, y] == field)
+                    return x;
+
+        return -1;
+    }
+
+    private GameObject createRndField(Vector3 scale, Vector3 pos, int x, int y)
+    {
+        GameObject field;
+
+        if (Random.value < 0.2f && this.numObstacles < maxObstacles)
+        {
+            this.numObstacles++;
+            field =  Instantiate(Resources.Load<GameObject>("Field_Obstacle"));
+        }
+        else
+        {
+            field = Instantiate(Resources.Load<GameObject>("Field_Empty"));
+        }
+
+        field.transform.localScale = scale;
+        field.transform.localPosition = pos;
+        this.grid[x, y] = field.GetComponent<absField>();
+
+        return field;
+    }
+
+    public Rigidbody getRigidbody() { return this.rigid; }
 }
