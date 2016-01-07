@@ -59,9 +59,14 @@ public class PlatformManager : MonoBehaviour {
         }
 	}
 
-    public void swapRow(PlatformRow row)
+    public void swapRow(PlatformRow row, bool fromTop)
     {
-        Vector3 moveTarget = new Vector3(0, 0, platformHeight);
+        int dir = 1;
+
+        if (!fromTop)
+            dir = -1;
+
+        Vector3 moveTarget = new Vector3(0, 0, platformHeight * dir);
         GameObject newRow = this.createPlatform(row.transform.position + moveTarget);
         newRow.GetComponent<PlatformRow>().setNewMoveTarget(row.transform.position, false);
 

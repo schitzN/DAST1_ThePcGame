@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour {
     public float stamina = 0;
     public float stamina_reg = 15;
     public int player = 1;
-    private string[] buttons = new string[4];
+    private string[] buttons = new string[5];
     public bool keyboardControl;
     new private Rigidbody rigidbody;
     public float jumpspeed = 50;
@@ -20,8 +20,9 @@ public class PlayerControl : MonoBehaviour {
 	void Start () {
         buttons[0] = ("joystick " + player + " button " + Buttons.DASH);
         buttons[1] = ("joystick " + player + " button " + Buttons.SPRINT);
-        buttons[2] = ("joystick " + player + " button " + Buttons.INTERACT);
-        buttons[3] = ("joystick " + player + " button " + Buttons.JUMP);
+        buttons[2] = ("joystick " + player + " button " + Buttons.INTERACTTOP);
+        buttons[3] = ("joystick " + player + " button " + Buttons.INTERACTBOTTOM);
+        buttons[4] = ("joystick " + player + " button " + Buttons.JUMP);
         this.rigidbody = this.GetComponent<Rigidbody>();
         this.col = this.GetComponent<SphereCollider>();
 	}
@@ -31,9 +32,9 @@ public class PlayerControl : MonoBehaviour {
         {
             Dash();
         }
-        if (keyDown("Interact") && grounded && !this.curRow.getIsMoving())
+        if ((keyDown("InteractTop") || keyDown("InteractBottom")) && grounded && !this.curRow.getIsMoving())
         {
-            PlatformManager.instance.swapRow(this.curRow);
+            PlatformManager.instance.swapRow(this.curRow, keyDown("InteractTop"));
             //this.curPlat.changeRow(this.curField);
         }
         if (keyDown("Jump") && grounded)
@@ -78,12 +79,16 @@ public class PlayerControl : MonoBehaviour {
                 if (Input.GetKey(buttons[1]) || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
                     return true;
                 break;
-            case "Interact":
+            case "InteractTop":
                 if (Input.GetKeyDown(buttons[2]) || (keyboardControl && Input.GetKeyDown(KeyCode.C)))
                     return true;
                 break;
+            case "InteractBottom":
+                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.V)))
+                    return true;
+                break;
             case "Jump":
-                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.Space)))
+                if (Input.GetKeyDown(buttons[4]) || (keyboardControl && Input.GetKeyDown(KeyCode.Space)))
                     return true;
                 break;
         }
