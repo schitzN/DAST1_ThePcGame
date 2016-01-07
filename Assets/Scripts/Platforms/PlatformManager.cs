@@ -66,10 +66,6 @@ public class PlatformManager : MonoBehaviour {
         newRow.GetComponent<PlatformRow>().setNewMoveTarget(row.transform.position, false);
 
         row.setNewMoveTarget(row.transform.position - moveTarget, true);
-        //this._platforms.Remove(row);
-        //Destroy(row.gameObject);
-
-        
     }
 
     private GameObject createPlatform(Vector3 pos)
@@ -78,6 +74,14 @@ public class PlatformManager : MonoBehaviour {
         this._platformRows.Add(plat.GetComponent<PlatformRow>());
         plat.transform.SetParent(this.transform);
         plat.transform.position = pos;
+
+        // ensure that the first few rows are always only empty
+        bool empty = false;
+
+        if (plat.transform.position.x > -((maxPlatforms / 8) * fieldSize) && plat.transform.position.x < ((maxPlatforms / 8) * fieldSize))
+            empty = true;
+
+        plat.GetComponent<PlatformRow>().initRows(empty);
 
         return plat;
     }
