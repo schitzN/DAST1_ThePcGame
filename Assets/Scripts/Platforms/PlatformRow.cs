@@ -85,7 +85,10 @@ public class PlatformRow : MonoBehaviour {
         {
             field = Instantiate(Resources.Load<GameObject>("Field_Empty"));
         }
-        field.transform.localScale = scale;
+
+        Vector3 scaleFix = new Vector3(scale.x + 0.01f, scale.y + 0.01f, scale.z + 0.01f);
+
+        field.transform.localScale = scaleFix;
         field.transform.position = pos;
         this._fields[x] = field.GetComponent<absField>();
 
