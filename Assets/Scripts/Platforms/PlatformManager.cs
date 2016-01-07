@@ -6,12 +6,12 @@ public class PlatformManager : MonoBehaviour {
 
     public static PlatformManager instance;
 
-    public static readonly int maxPlatforms = 22;
+    public static readonly int maxPlatforms = 28;
     public static readonly int platformHeight = 20;
-    public static readonly int gridSize = 8;
+    public static readonly int gridSize = 10;
     public static readonly float lavaDmg = 0.5f;
     public static float platformGap = 0;
-    public static float platformSpeed = 2f;
+    public static float platformSpeed = 3f;
 
     private List<PlatformRow> _platformRows;
     private PlatformRow _platToDestroy;
@@ -52,10 +52,7 @@ public class PlatformManager : MonoBehaviour {
             this._platToDestroy = null;
 
             // create new
-            //this.createPlatform(new Vector3((fieldSize + platformGap) * (maxPlatforms / 2), 0, 0));
             this.createPlatform(new Vector3(x + (fieldSize + platformGap) * maxPlatforms, 0, 0));
-
-            // TODO: Fix gap when new row is created
         }
 	}
 

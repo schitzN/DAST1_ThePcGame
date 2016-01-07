@@ -3,11 +3,11 @@ using System.Collections;
 
 public class PlatformRow : MonoBehaviour {
 
-    private int maxObstacles = 3;
-    private int maxHoles = 3;
-    private float maxDifficulty = 20f;
-    private float timeDifficulty = 10f; // the higher the slower the difficulty increase
-    private float rowSwapSpeed = 4f;
+    private int maxObstacles = 4;
+    private int maxHoles = 4;
+    private float maxDifficulty = 15f;
+    private float timeDifficulty = 7f; // the higher the slower the difficulty increase
+    private float rowSwapSpeed = 5f;
 
     private Rigidbody _rigid;
     private absField[] _fields;

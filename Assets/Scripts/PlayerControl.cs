@@ -154,7 +154,7 @@ public class PlayerControl : MonoBehaviour {
         RaycastHit hit;
         Vector3 down = transform.TransformDirection(Vector3.down);
         
-        if (Physics.Raycast(transform.position, down, out hit, 1f, 1 << LayerMask.NameToLayer("World")))
+        if (Physics.Raycast(transform.position, down, out hit, 2.5f, 1 << LayerMask.NameToLayer("World")))
         {
             PlatformRow row = hit.transform.GetComponent<PlatformRow>();
 
