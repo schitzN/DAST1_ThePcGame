@@ -98,7 +98,7 @@ public class PlayerControl : MonoBehaviour {
         else if (!grounded)
             rigidbody.velocity = new Vector3(lastVel.x, rigidbody.velocity.y, lastVel.z);
         if (!grounded && dashing == 0)
-            lastVel = lastVel + (new Vector3(vel.x,0,vel.y) - new Vector3(lastVel.x,0,lastVel.z)) * Time.deltaTime;
+            lastVel = lastVel + (new Vector3(vel.x,0,vel.y) - new Vector3(lastVel.x,0,lastVel.z)) * Time.deltaTime * 3f;
         checkPlatforms();
         groundCheck();
         vel = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
