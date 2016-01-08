@@ -161,7 +161,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (stamina >= 55)
         {
-            Vector2 dash = new Vector2(Input.GetAxis("Horizontal" + player), Input.GetAxis("Vertical" + player));
+            Vector3 dash = new Vector3(Input.GetAxis("Horizontal" + player),0, Input.GetAxis("Vertical" + player));
             this.GetComponents<AudioSource>()[2].Play();
             this.stamina -= 55;
             this.dashing = 0.4f;

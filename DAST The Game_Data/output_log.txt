@@ -14,17 +14,17 @@ Platform assembly: D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Manage
 Loading D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.039 seconds
+- Completed reload, in  0.040 seconds
 Platform assembly: D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Dokumente\GitHub\DAST1_ThePcGame\DAST The Game_Data\Managed\System.dll (this message is harmless)
 desktop: 1600x900 60Hz; virtual: 1600x900 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.490945 ms
+UnloadTime: 0.457588 ms
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 1440 -> priority: 1 
-  Thread -> id: 2e70 -> priority: 1 
+  Thread -> id: 31b0 -> priority: 1 
+  Thread -> id: 32a4 -> priority: 1 
 1
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
