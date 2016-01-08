@@ -22,7 +22,7 @@ public class PlayerControl : MonoBehaviour {
     public float health = 100;
     public Transform healthBar;
     private float dashing = 0;
-    private float dashingspeed = 20f;
+    private float dashingspeed = 22f;
     private float burnCounter;
     ParticleSystem psys;
 
@@ -50,8 +50,9 @@ public class PlayerControl : MonoBehaviour {
         {
             Dash();
         }
-        if ((keyDown("InteractTop") || keyDown("InteractBottom")) && grounded && !this.curRow.getIsMoving())
+        if ((keyDown("InteractTop") || keyDown("InteractBottom")) && grounded && !this.curRow.getIsMoving() && this.stamina >= 15)
         {
+            stamina -= 15;
             PlatformManager.instance.swapRow(this.curRow, keyDown("InteractTop"));
             //this.curPlat.changeRow(this.curField);
         }
@@ -73,6 +74,7 @@ public class PlayerControl : MonoBehaviour {
             this.dashing -= Time.deltaTime;
         if (dashing < 0)
         {
+            this.transform.GetChild(1).gameObject.SetActive(false);
             dashing = 0;
         }
 
@@ -92,7 +94,7 @@ public class PlayerControl : MonoBehaviour {
             force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();
-        rigidbody.mass = dashing > 0 ? mass * Mathf.Max(rigidbody.velocity.magnitude * 2f, 3) : mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
+        rigidbody.mass = dashing > 0 ? mass * Mathf.Max(rigidbody.velocity.magnitude * 500f, 3) : mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
          this.force = speed * Mathf.Min(rigidbody.velocity.magnitude, 1);
 
         if (keyDown("Sprint") && stamina > 0)
@@ -135,7 +137,7 @@ public class PlayerControl : MonoBehaviour {
                     return true;
                 break;
             case "Sprint":
-                if (Input.GetKey(buttons[1]) || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
+                if (Input.GetAxis("Trigger"+player)!=0 || (keyboardControl && Input.GetKey(KeyCode.LeftShift)))
                     return true;
                 break;
             case "InteractTop":
@@ -157,12 +159,13 @@ public class PlayerControl : MonoBehaviour {
 
     void Dash()
     {
-        if (stamina >= 70)
+        if (stamina >= 55)
         {
             this.GetComponents<AudioSource>()[2].Play();
-            this.stamina -= 70;
-            this.dashing = 0.25f;
+            this.stamina -= 55;
+            this.dashing = 0.4f;
             rigidbody.velocity = dir * dashingspeed;
+            this.transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 
@@ -187,16 +190,22 @@ public class PlayerControl : MonoBehaviour {
 
     Vector2 calcVel(Vector2 force)
     {
+        Debug.Log(rigidbody.velocity.x);
         Vector2 vel = Vector2.zero;
+        float bounceLimit = 6f;
+        float learningRate = 0.2f;
         if (force.x >= 0)
         {
             if (rigidbody.velocity.x >= 0)
             {
                 vel.x = Mathf.Max(force.x * speed, rigidbody.velocity.x);
             }
-            else
+            else if (rigidbody.velocity.x >= -bounceLimit)
             {
                 vel.x = rigidbody.velocity.x + force.x * speed * 1f;
+            }
+            else {
+                vel.x = rigidbody.velocity.x + force.x * speed * learningRate * Time.deltaTime;
             }
         }
         else if (force.x < 0)
@@ -205,9 +214,13 @@ public class PlayerControl : MonoBehaviour {
             {
                 vel.x = Mathf.Min(force.x * speed, rigidbody.velocity.x);
             }
-            else
+            else if (rigidbody.velocity.x <= bounceLimit)
             {
                 vel.x = rigidbody.velocity.x + force.x * speed * 1f;
+            }
+            else
+            {
+                vel.x = rigidbody.velocity.x + force.x * speed * learningRate * Time.deltaTime;
             }
         }
 
@@ -217,9 +230,13 @@ public class PlayerControl : MonoBehaviour {
             {
                 vel.y = Mathf.Max(force.y * speed, rigidbody.velocity.z);
             }
-            else
+            else if (rigidbody.velocity.z >= -bounceLimit)
             {
                 vel.y = rigidbody.velocity.z + force.y * speed * 1f;
+            }
+            else
+            {
+                vel.y = rigidbody.velocity.z + force.y * speed * learningRate * Time.deltaTime;
             }
         }
         else if (force.y < 0)
@@ -228,9 +245,13 @@ public class PlayerControl : MonoBehaviour {
             {
                 vel.y = Mathf.Min(force.y * speed, rigidbody.velocity.z);
             }
-            else
+            else if (rigidbody.velocity.z <= bounceLimit)
             {
                 vel.y = rigidbody.velocity.z + force.y * speed * 1f;
+            }
+            else
+            {
+                vel.y = rigidbody.velocity.z + force.y * speed * learningRate * Time.deltaTime;
             }
         }
         return vel;
@@ -244,7 +265,7 @@ public class PlayerControl : MonoBehaviour {
     
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Players") && other.impulse.magnitude > 1000)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Players") && other.impulse.magnitude > 1500)
         {
             this.GetComponents<AudioSource>()[1].Play();
         }
