@@ -38,7 +38,7 @@ public class PlayerControl : MonoBehaviour {
         this.col = this.GetComponent<SphereCollider>();
         this.mass = rigidbody.mass;
         this.force = speed;
-        this.dir = transform.forward;
+        this.dir = transform.right;
         this.psys = GetComponent<ParticleSystem>();
 
         this.healthBar = GameObject.Find("Player" + this.player + "gui").transform.FindChild("Health");
@@ -95,10 +95,11 @@ public class PlayerControl : MonoBehaviour {
         rigidbody.mass = dashing > 0 ? mass * Mathf.Max(rigidbody.velocity.magnitude * 2f, 3) : mass * Mathf.Max(rigidbody.velocity.magnitude, 3);
          this.force = speed * Mathf.Min(rigidbody.velocity.magnitude, 1);
 
-        if (keyDown("Sprint"))
+        if (keyDown("Sprint") && stamina > 0)
         {
-            force *= 1.5f;
-            this.stamina = Mathf.Max(this.stamina - 1f, 0);
+            this.stamina = Mathf.Max(this.stamina - 1.2f, 0);
+            if (stamina > 0)
+                force *= 1.8f;
         }
         Vector2 vel = calcVel(force);
 
@@ -130,7 +131,7 @@ public class PlayerControl : MonoBehaviour {
         switch (type)
         {
             case "Dash":
-                if (Input.GetKeyDown(buttons[0]) || (keyboardControl && Input.GetKeyDown(KeyCode.X)))
+                if (Input.GetKeyDown(buttons[0]) || (keyboardControl && Input.GetKeyDown(KeyCode.Y)))
                     return true;
                 break;
             case "Sprint":
@@ -142,7 +143,7 @@ public class PlayerControl : MonoBehaviour {
                     return true;
                 break;
             case "InteractBottom":
-                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.V)))
+                if (Input.GetKeyDown(buttons[3]) || (keyboardControl && Input.GetKeyDown(KeyCode.X)))
                     return true;
                 break;
             case "Jump":
@@ -158,6 +159,7 @@ public class PlayerControl : MonoBehaviour {
     {
         if (stamina >= 70)
         {
+            this.GetComponents<AudioSource>()[2].Play();
             this.stamina -= 70;
             this.dashing = 0.25f;
             rigidbody.velocity = dir * dashingspeed;
@@ -239,17 +241,14 @@ public class PlayerControl : MonoBehaviour {
         grounded = Physics.CheckSphere(col.center + transform.position, col.radius, 1 << LayerMask.NameToLayer("World"));
     }
 
-    /*
+    
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Players"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Players") && other.impulse.magnitude > 1000)
         {
-            other.collider.attachedRigidbody.AddForce((other.transform.position - this.transform.position) * 1000f * Vector3.Cross(this.rigidbody.velocity , (other.transform.position - this.transform.position)).magnitude);
-        //    other.collider.attachedRigidbody.velocity = other.collider.attachedRigidbody.velocity + other.impulse.normalized * 10f;
-        //    this.rigidbody.velocity = this.rigidbody.velocity + other.impulse.normalized * -10f;
+            this.GetComponents<AudioSource>()[1].Play();
         }
     }
-     * */
 
     public void hurtPlayer(float damage)
     {
@@ -266,7 +265,7 @@ public class PlayerControl : MonoBehaviour {
         if (this.health < 0)
         {
             //this.hpTxt.text = "DEAD";
-            transform.GetChild(0).gameObject.active = true;
+            transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(0).parent = transform.root;
             Destroy(this.gameObject);
             GameManager.instance.playerDied(this);

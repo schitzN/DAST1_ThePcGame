@@ -12,6 +12,7 @@ public class PlatformManager : MonoBehaviour {
     public static readonly float lavaDmg = 0.5f;
     public static float platformGap = 0;
     public static float platformSpeed = 3f;
+    public static float speedUp = 1;
     private float basePlatformSpeed;
 
     private List<PlatformRow> _platformRows;
@@ -35,6 +36,11 @@ public class PlatformManager : MonoBehaviour {
             return;
 
         PlatformManager.platformSpeed = GameManager.instance.curRoundTime > 5? Mathf.Floor(basePlatformSpeed * Mathf.Max((GameManager.instance.curRoundTime+60f)/120f,1)) : Mathf.Max((GameManager.instance.curRoundTime-1)/4f,0) * basePlatformSpeed;
+        if (speedUp > 1)
+        {
+            PlatformManager.platformSpeed = Mathf.Max(basePlatformSpeed * speedUp, PlatformManager.platformSpeed);
+            speedUp = 1f;
+        }
 
         foreach (PlatformRow p in this._platformRows)
         {
