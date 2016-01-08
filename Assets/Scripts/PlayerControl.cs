@@ -25,6 +25,7 @@ public class PlayerControl : MonoBehaviour {
     private float dashingspeed = 22f;
     private float burnCounter;
     ParticleSystem psys;
+    CameraShake camshake;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,7 @@ public class PlayerControl : MonoBehaviour {
 
         this.healthBar = GameObject.Find("Player" + this.player + "gui").transform.FindChild("Health");
         this.healthBar.localScale = new Vector3(GameManager.instance.defaultStaminaBar, this.healthBar.localScale.y, this.healthBar.localScale.z);
+        this.camshake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
     }
 	
 	void Update() {
@@ -271,6 +273,11 @@ public class PlayerControl : MonoBehaviour {
         if (other.gameObject.layer == LayerMask.NameToLayer("Players") && other.impulse.magnitude > 1500)
         {
             this.GetComponents<AudioSource>()[1].Play();
+            if (other.impulse.magnitude > 2500)
+            {
+                camshake.shake = 0.5f;
+                camshake.shakeAmount = 0.5f;
+            }
         }
     }
 
@@ -293,6 +300,8 @@ public class PlayerControl : MonoBehaviour {
             transform.GetChild(0).parent = transform.root;
             Destroy(this.gameObject);
             GameManager.instance.playerDied(this);
+            camshake.shake = 0.5f;
+            camshake.shakeAmount = 1f;
         }
     }
 }
