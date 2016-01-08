@@ -161,10 +161,14 @@ public class PlayerControl : MonoBehaviour {
     {
         if (stamina >= 55)
         {
+            Vector2 dash = new Vector2(Input.GetAxis("Horizontal" + player), Input.GetAxis("Vertical" + player));
             this.GetComponents<AudioSource>()[2].Play();
             this.stamina -= 55;
             this.dashing = 0.4f;
-            rigidbody.velocity = dir * dashingspeed;
+            if(dash.magnitude == 0)
+                rigidbody.velocity = dir * dashingspeed;
+            else
+                rigidbody.velocity = dash.normalized * dashingspeed;
             this.transform.GetChild(1).gameObject.SetActive(true);
         }
     }
@@ -190,7 +194,6 @@ public class PlayerControl : MonoBehaviour {
 
     Vector2 calcVel(Vector2 force)
     {
-        Debug.Log(rigidbody.velocity.x);
         Vector2 vel = Vector2.zero;
         float bounceLimit = 6f;
         float learningRate = 0.2f;

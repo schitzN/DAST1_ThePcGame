@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     private int numPlayers = 4;
     public bool gameRunning = false;
     public float defaultStaminaBar;
+    public bool KeyboardControlPlayer4;
 
 	// Use this for initialization
 	void Start () {
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour {
         {
             GameObject pl = Instantiate(Resources.Load<GameObject>("Player"));
 
-            pl.transform.position = new Vector3(0, 5f, PlatformManager.instance.getFieldSize() * (i - (this.numPlayers / 2f)) + PlatformManager.instance.getFieldSize() / 2f);
+            pl.transform.position = new Vector3(0, 5f,2* PlatformManager.instance.getFieldSize() * (i - (this.numPlayers / 2f)) + 2* PlatformManager.instance.getFieldSize() / 2f);
             pl.transform.SetParent(this.Players);
             pl.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Player" + (i + 1));
 
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour {
             GameObject.Find("Panel" + (i + 1) + " color").GetComponent<Image>().color = c;
             pl.GetComponent<Renderer>().material.color = c;
 
-            if (i == this.numPlayers - 1)
+            if (i == this.numPlayers - 1 && KeyboardControlPlayer4)
                 pc.keyboardControl = true;
         }
 
