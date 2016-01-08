@@ -3855,6 +3855,7 @@ MonoBehaviour:
   curRoundTime: 0
   gameRunning: 0
   defaultStaminaBar: 0
+  KeyboardControl: 4
 --- !u!1 &1171563021
 GameObject:
   m_ObjectHideFlags: 0

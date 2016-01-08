@@ -90,7 +90,7 @@ public class PlayerControl : MonoBehaviour {
         
 
         Vector2 force = new Vector2(Input.GetAxis("Horizontal"+player), Input.GetAxis("Vertical"+player));
-        if (keyboardControl)
+        if (keyboardControl && force.magnitude == 0)
             force = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         if(force.magnitude>1)
             force.Normalize();

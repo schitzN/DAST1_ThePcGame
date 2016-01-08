@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     private int numPlayers = 4;
     public bool gameRunning = false;
     public float defaultStaminaBar;
-    public bool KeyboardControlPlayer4;
+    public int KeyboardControl;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
         this.Players = GameObject.Find("Players").transform;
         this.defaultStaminaBar = GameObject.Find("Player1gui").transform.FindChild("Health").localScale.x;
         StartCoroutine(this.restart());
+        KeyboardControl = Mathf.Clamp(KeyboardControl, 1, 4);
     }
 	
 	// Update is called once per frame
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour {
             GameObject.Find("Panel" + (i + 1) + " color").GetComponent<Image>().color = c;
             pl.GetComponent<Renderer>().material.color = c;
 
-            if (i == this.numPlayers - 1 && KeyboardControlPlayer4)
+            if (i == KeyboardControl - 1)
                 pc.keyboardControl = true;
         }
 
