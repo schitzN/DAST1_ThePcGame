@@ -13,6 +13,7 @@ public class PlatformManager : MonoBehaviour {
     public static float platformGap = 0;
     public static float platformSpeed = 3f;
     public static float speedUp = 1;
+    
     private float basePlatformSpeed;
 
     private List<PlatformRow> _platformRows;
@@ -32,7 +33,7 @@ public class PlatformManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!GameManager.instance.gameRunning)
+        if (!GameManager.instance.gameRunning || GameManager.paused)
             return;
 
         PlatformManager.platformSpeed = GameManager.instance.curRoundTime > 5? Mathf.Floor(basePlatformSpeed * Mathf.Max((GameManager.instance.curRoundTime+60f)/120f,1)) : Mathf.Max((GameManager.instance.curRoundTime-1)/4f,0) * basePlatformSpeed;

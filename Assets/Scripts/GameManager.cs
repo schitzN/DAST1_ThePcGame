@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public bool gameRunning = false;
     public float defaultStaminaBar;
     public int KeyboardControl;
+    public static bool paused = false;
 
 	// Use this for initialization
 	void Start () {
@@ -27,9 +28,11 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         if (!gameRunning)
             return;
-
-        this.curRoundTime += Time.deltaTime;
+        if(!GameManager.paused)
+            this.curRoundTime += Time.deltaTime;
         this.roundTimeTxt.text = "ROUND TIME\n" + (int)this.curRoundTime;
+        if(Input.GetKeyDown(KeyCode.P))
+            GameManager.paused = !GameManager.paused;
 	}
 
     public void playerDied(PlayerControl player)
