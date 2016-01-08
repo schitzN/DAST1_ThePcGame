@@ -266,6 +266,8 @@ public class PlayerControl : MonoBehaviour {
         if (this.health < 0)
         {
             //this.hpTxt.text = "DEAD";
+            transform.GetChild(0).gameObject.active = true;
+            transform.GetChild(0).parent = transform.root;
             Destroy(this.gameObject);
             GameManager.instance.playerDied(this);
         }
