@@ -273,7 +273,7 @@ public class PlayerControl : MonoBehaviour {
         if (other.gameObject.layer == LayerMask.NameToLayer("Players") && other.impulse.magnitude > 1500)
         {
             this.GetComponents<AudioSource>()[1].Play();
-            if (other.impulse.magnitude > 2500)
+            if (other.impulse.magnitude > 5000)
             {
                 camshake.shake = 0.5f;
                 camshake.shakeAmount = 0.5f;
@@ -300,8 +300,8 @@ public class PlayerControl : MonoBehaviour {
             transform.GetChild(0).parent = transform.root;
             Destroy(this.gameObject);
             GameManager.instance.playerDied(this);
-            camshake.shake = 0.5f;
-            camshake.shakeAmount = 1f;
+            camshake.shake = 0.8f;
+            camshake.shakeAmount = 1.3f;
         }
     }
 }
